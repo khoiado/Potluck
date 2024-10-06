@@ -1,25 +1,29 @@
-import logo from './logo.svg';
-import './App.css';
+import React from 'react';
+import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
+import { RequiredAuthProvider } from '@propelauth/react';  // Use RequiredAuthProvider to force login
+import HomeScreen from './screens/HomeScreen';
+import LoginScreen from './screens/LoginScreen';
 
-function App() {
+const App = () => {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <RequiredAuthProvider
+      authUrl={process.env.REACT_APP_AUTH_URL}  // Ensure this is correctly set in .env
+      displayWhileLoading={<div>Loading...</div>}
+      displayIfLoggedOut={<LoginScreen />}
+    >
+      <Router>
+        <Routes>
+          {/* Route for the root path ("/") - Redirect to "/home" when authenticated */}
+          <Route path="/" element={<Navigate to="/home" />} />
+
+          {/* Protected route for HomeScreen */}
+          <Route path="/home" element={<HomeScreen />} />
+          
+          {/* Add other protected routes here */}
+        </Routes>
+      </Router>
+    </RequiredAuthProvider>
   );
-}
+};
 
 export default App;
