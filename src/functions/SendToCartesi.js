@@ -1,6 +1,6 @@
 async function sendToCartesi(recipes) {
     try {
-      const response = await fetch('https://cartesi-machine-endpoint/receive-json', {
+      const response = await fetch('http://localhost:8080/graphql', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
